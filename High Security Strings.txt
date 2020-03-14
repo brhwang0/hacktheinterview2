@@ -1,0 +1,71 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
+import java.util.regex.*;
+import java.util.stream.*;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
+class Result {
+
+    /*
+     * Complete the 'getStrength' function below.
+     *
+     * The function is expected to return an INTEGER.
+     * The function accepts following parameters:
+     *  1. STRING password
+     *  2. INTEGER weight_a
+     */
+
+    public static int getStrength(String password, int weight_a) {
+    // Complete the function
+        
+        if (weight_a < 0 || weight_a > 25) {
+            throw new IllegalArgumentException("Invalid weight.");
+        }
+        
+        int[] weights = new int[26];
+        for (int i = 0; i < weights.length; i++) {
+            if (weight_a + 1 > 26) {
+                weight_a = 0;
+            }
+            weights[i] = weight_a;
+            weight_a++;
+        }
+        
+        int result = 0;
+        
+        for (int i = 0;i < password.length(); i++) {
+            char c = password.charAt(i);
+            int n = Character.getNumericValue(c) - 10;
+            result += weights[n];
+        }
+        
+        return result;
+        
+    }
+
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String password = bufferedReader.readLine();
+
+        int weight_a = Integer.parseInt(bufferedReader.readLine().trim());
+
+        int strength = Result.getStrength(password, weight_a);
+
+        bufferedWriter.write(String.valueOf(strength));
+        bufferedWriter.newLine();
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}
